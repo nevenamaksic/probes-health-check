@@ -10,7 +10,6 @@ spec:
   selector:
     matchLabels:
       app: health-probes-deployment
-  strategy: {}
   template:
     metadata:
       creationTimestamp: null
@@ -19,6 +18,17 @@ spec:
     spec:
       containers:
       - image: health-probes
+        imagePullPolicy: IfNotPresent
         name: health-probes
+        readinessProbe:
+          httpGet:
+            path: /healthz
+            port: 80
+          initialDelaySeconds: 2
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: 80
+          periodSeconds: 5   
         resources: {}
 status: {}
